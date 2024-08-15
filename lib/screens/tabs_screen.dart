@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:phtv_admin/screens/home_screen.dart';
 import 'package:phtv_admin/screens/manage_screen.dart';
+import 'package:phtv_admin/screens/profile_screen.dart';
 
 var storage = const FlutterSecureStorage();
 
@@ -34,10 +35,10 @@ class _TabsScreenState extends State<TabsScreen> {
 
     switch (_selectedIndex) {
       case 0:
-        activePage = const HomeScreen();
+        activePage = const ProfileScreen();
         break;
       case 1:
-        activePage = const ManageScreen();
+        activePage = const HomeScreen();
         break;
       case 2:
         activePage = const ManageScreen();
@@ -56,26 +57,22 @@ class _TabsScreenState extends State<TabsScreen> {
           selectedIconTheme: const IconThemeData(color: Colors.indigoAccent),
           unselectedIconTheme: const IconThemeData(color: Colors.white),
           minWidth: 30,
-          leading: Container(
-            margin: const EdgeInsets.only(bottom: 35),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.white),
-              borderRadius: BorderRadius.circular(50),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  spreadRadius: 2,
-                  blurRadius: 20,
-                ),
-              ],
-            ),
-            child: const CircleAvatar(
-              backgroundImage:
-              NetworkImage('https://i.pravatar.cc/20'),
-              radius: 20,
-            ),
-          ),
           destinations: const [
+            NavigationRailDestination(
+              icon: CircleAvatar(
+                backgroundImage: NetworkImage('https://i.pravatar.cc/20'),
+                radius: 18,
+              ),
+              selectedIcon: CircleAvatar(
+                backgroundColor: Colors.blue,
+                radius: 18,
+                child: CircleAvatar(
+                  backgroundImage: NetworkImage('https://i.pravatar.cc/20'),
+                  radius: 16,
+                ),
+              ),
+              label: Text('Home', style: TextStyle(color: Colors.white)),
+            ),
             NavigationRailDestination(
               icon: Icon(EneftyIcons.chart_2_outline),
               selectedIcon: Icon(EneftyIcons.chart_2_bold),

@@ -2,19 +2,9 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class JobChart extends StatefulWidget {
-  JobChart({super.key});
-
-  List<Color> get availableColors => const <Color>[
-    Colors.pink,
-    Colors.yellow,
-    Colors.blue,
-    Colors.orange,
-    Colors.pink,
-    Colors.red,
-  ];
-
-  final Color barBackgroundColor =
-  Colors.white.withOpacity(0.3);
+  JobChart({super.key, required this.chartData});
+  final List chartData;
+  final Color barBackgroundColor = Colors.white.withOpacity(0.3);
   final Color barColor = Colors.white;
   final Color touchedBarColor = Colors.blue;
 
@@ -24,18 +14,18 @@ class JobChart extends StatefulWidget {
 
 class _JobChartState extends State<JobChart> {
   final Duration animDuration = const Duration(milliseconds: 250);
-
   int touchedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1.6,
-      child: Expanded(
+    return Expanded(
+      child: AspectRatio(
+        aspectRatio: 1.6,
         child: BarChart(mainBarData()),
       ),
     );
   }
+
 
   BarChartGroupData makeGroupData(
       int x,
@@ -67,38 +57,30 @@ class _JobChartState extends State<JobChart> {
     );
   }
 
-  List<BarChartGroupData> showingGroups() => List.generate(12, (i) {
-    switch (i) {
-      case 0:
-        return makeGroupData(0, 5, isTouched: i == touchedIndex);
-      case 1:
-        return makeGroupData(1, 6.5, isTouched: i == touchedIndex);
-      case 2:
-        return makeGroupData(2, 5, isTouched: i == touchedIndex);
-      case 3:
-        return makeGroupData(3, 7.5, isTouched: i == touchedIndex);
-      case 4:
-        return makeGroupData(4, 9, isTouched: i == touchedIndex);
-      case 5:
-        return makeGroupData(5, 11.5, isTouched: i == touchedIndex);
-      case 6:
-        return makeGroupData(6, 6.5, isTouched: i == touchedIndex);
-      case 7:
-        return makeGroupData(7, 7.5, isTouched: i == touchedIndex);
-      case 8:
-        return makeGroupData(8, 9, isTouched: i == touchedIndex);
-      case 9:
-        return makeGroupData(9, 11.5, isTouched: i == touchedIndex);
-      case 10:
-        return makeGroupData(10, 6.5, isTouched: i == touchedIndex);
-      case 11:
-        return makeGroupData(11, 6.5, isTouched: i == touchedIndex);
-      default:
-        return throw Error();
-    }
-  });
+  BarChartGroupData generateGroupData(int x, double pilates) {
+    return BarChartGroupData(
+      x: x,
+      groupVertically: true,
+      barRods: [
+        BarChartRodData(
+            fromY: 0,
+            toY: pilates,
+            color: pilates > 0 ? Colors.black87 : Colors.amber,
+            width: 7,
+            borderRadius: pilates > 0 ? const BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)) : const BorderRadius.only(bottomLeft: Radius.circular(15.0), bottomRight: Radius.circular(15.0))
+        ),
+      ],
+    );
+  }
+
 
   BarChartData mainBarData() {
+    List<BarChartGroupData> dataChart = [];
+    for(var i = 0; i < widget.chartData.length; i++) {
+      double val = widget.chartData[i].toDouble();
+      BarChartGroupData barChartGroupData = makeGroupData(i, val, isTouched: i == touchedIndex);
+      dataChart.add(barChartGroupData);
+    }
     return BarChartData(
       barTouchData: BarTouchData(
         touchTooltipData: BarTouchTooltipData(
@@ -203,7 +185,7 @@ class _JobChartState extends State<JobChart> {
       borderData: FlBorderData(
         show: false,
       ),
-      barGroups: showingGroups(),
+      barGroups: dataChart,
       gridData: const FlGridData(show: false),
     );
   }
