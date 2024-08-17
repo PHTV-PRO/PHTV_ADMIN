@@ -1,9 +1,8 @@
 import 'package:enefty_icons/enefty_icons.dart';
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:phtv_admin/screens/home_screen.dart';
-import 'package:phtv_admin/screens/manage_screen.dart';
+import 'package:phtv_admin/screens/my_jobs_screen.dart';
 import 'package:phtv_admin/screens/profile_screen.dart';
 
 var storage = const FlutterSecureStorage();
@@ -35,13 +34,16 @@ class _TabsScreenState extends State<TabsScreen> {
 
     switch (_selectedIndex) {
       case 0:
-        activePage = const ProfileScreen();
-        break;
-      case 1:
         activePage = const HomeScreen();
         break;
+      case 1:
+        activePage = const MyJobsScreen();
+        break;
       case 2:
-        activePage = const ManageScreen();
+        activePage = const ProfileScreen();
+        break;
+      case 3:
+        activePage = const ProfileScreen();
         break;
     }
 
@@ -59,21 +61,6 @@ class _TabsScreenState extends State<TabsScreen> {
           minWidth: 30,
           destinations: const [
             NavigationRailDestination(
-              icon: CircleAvatar(
-                backgroundImage: NetworkImage('https://i.pravatar.cc/20'),
-                radius: 18,
-              ),
-              selectedIcon: CircleAvatar(
-                backgroundColor: Colors.blue,
-                radius: 18,
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage('https://i.pravatar.cc/20'),
-                  radius: 16,
-                ),
-              ),
-              label: Text('Home', style: TextStyle(color: Colors.white)),
-            ),
-            NavigationRailDestination(
               icon: Icon(EneftyIcons.chart_2_outline),
               selectedIcon: Icon(EneftyIcons.chart_2_bold),
               label: Text('Home', style: TextStyle(color: Colors.white)),
@@ -87,6 +74,11 @@ class _TabsScreenState extends State<TabsScreen> {
               icon: Icon(EneftyIcons.document_text_outline),
               selectedIcon: Icon(EneftyIcons.document_text_bold),
               label: Text('My CV', style: TextStyle(color: Colors.white)),
+            ),
+            NavigationRailDestination(
+              icon: Icon(EneftyIcons.user_outline),
+              selectedIcon: Icon(EneftyIcons.user_bold),
+              label: Text('Profile', style: TextStyle(color: Colors.white)),
             ),
           ],
         ),

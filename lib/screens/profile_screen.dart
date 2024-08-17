@@ -53,7 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : Container(
-              margin: const EdgeInsets.all(14.0),
+              margin: const EdgeInsets.symmetric(horizontal: 14.0),
               padding: const EdgeInsets.all(10.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -92,17 +92,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
+                        color: Colors.black54,
                       ),
                       child: Column(
                         children: [
                           Text(
                             combo,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white54),
                           ),
                           Text(
                             'From: ${DateFormat("dd/MM/yyyy").format(DateTime.parse(comboStart))} - To: ${DateFormat("dd/MM/yyyy").format(DateTime.parse(comboEnd))}',
-                            style: const TextStyle(fontSize: 12),
+                            style: const TextStyle(fontSize: 12, color: Colors.white54),
                           ),
                         ],
                       )),

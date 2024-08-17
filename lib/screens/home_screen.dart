@@ -1,8 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:phtv_admin/widgets/job_chart.dart';
-import 'package:phtv_admin/widgets/perform_chart.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:phtv_admin/widgets/job_chart.dart';
+import 'package:phtv_admin/widgets/job_view_chart.dart';
+import 'package:phtv_admin/widgets/receive_cv_chart.dart';
 import '../apis/apis_list.dart';
+
+var storage = const FlutterSecureStorage();
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,7 +19,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   var data = {};
   List jobChartData = [];
+  List rcvCvData = [];
   int postedJob = 0;
+  List jobViewData = [];
   int noOfCV = 0;
   double overalPayment = 0;
   bool isLoading = true;
@@ -26,11 +33,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   getJobsChartData() async {
-    var rs = await AdminChartApi.getChartData.sendRequest(urlParam: '/2');
+    var loggedUser = await storage.read(key: 'user');
+    int userId = jsonDecode(loggedUser!)['id'];
+    var rs = await AdminChartApi.getChartData.sendRequest(urlParam: '/${userId.toString()}');
     data = rs;
     if (data.isNotEmpty) {
       setState(() {
         jobChartData = data['jobs'];
+        rcvCvData = data['number_of_job_applicated'];
+        jobViewData = data['number_of_job_viewed'];
         postedJob = data['jobs_has_been_created'];
         noOfCV = data['total_applicated_by_month'];
         overalPayment = data['overall_payment'];
@@ -52,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : Container(
-              margin: const EdgeInsets.all(10.0),
+              margin: const EdgeInsets.symmetric(horizontal: 8),
               child: Column(
                 children: [
                   Row(
@@ -61,26 +72,36 @@ class _HomeScreenState extends State<HomeScreen> {
                       homedata('No. of CV', noOfCV, Colors.green)
                     ],
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 20),
                   const Text(
                     'Your Posted Job Per Month',
                     style: TextStyle(
                         color: Colors.white70,
-                        fontSize: 17,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold),
                   ),
                   JobChart(
                     chartData: jobChartData,
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Job View Per Month',
+                    style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  JobViewChart(chartData: jobViewData),
+                  const SizedBox(height: 20),
                   const Text(
                     'CV Received Per Month',
                     style: TextStyle(
                         color: Colors.white70,
-                        fontSize: 17,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold),
                   ),
-                  PerformChart()
+
+                  ReceivedCVChart(chartData: rcvCvData,)
                 ],
               )),
     );
@@ -90,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Expanded(
       flex: 5,
       child: Container(
-        height: 75,
+        height: 70,
         margin: const EdgeInsets.all(8),
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
@@ -104,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 num.toString(),
                 style: const TextStyle(
                     color: Colors.white70,
-                    fontSize: 26,
+                    fontSize: 24,
                     fontWeight: FontWeight.bold),
               ),
             ],

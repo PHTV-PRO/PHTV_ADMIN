@@ -1,17 +1,17 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-class PerformChart extends StatefulWidget {
-  const PerformChart({super.key});
-
+class JobViewChart extends StatefulWidget {
+  const JobViewChart({super.key,required this.chartData});
+  final List chartData;
   @override
-  State<PerformChart> createState() => _PerformChartState();
+  State<JobViewChart> createState() => _JobViewChartState();
 }
 
-class _PerformChartState extends State<PerformChart> {
+class _JobViewChartState extends State<JobViewChart> {
   List<Color> gradientColors = [
-    Colors.cyan,
-    Colors.blue,
+    Colors.deepPurple,
+    Colors.pinkAccent,
   ];
 
   bool showAvg = false;
@@ -21,7 +21,7 @@ class _PerformChartState extends State<PerformChart> {
     return Stack(
       children: <Widget>[
         AspectRatio(
-          aspectRatio: 1.4,
+          aspectRatio: 1.8,
           child: Padding(
             padding: const EdgeInsets.all(8),
             child: LineChart(
@@ -36,7 +36,8 @@ class _PerformChartState extends State<PerformChart> {
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      fontSize: 16,
+      fontSize: 10,
+        color: Colors.white70
     );
     Widget text;
     switch (value.toInt()) {
@@ -58,29 +59,6 @@ class _PerformChartState extends State<PerformChart> {
       axisSide: meta.axisSide,
       child: text,
     );
-  }
-
-  Widget leftTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 15,
-    );
-    String text;
-    switch (value.toInt()) {
-      case 1:
-        text = '10K';
-        break;
-      case 3:
-        text = '30k';
-        break;
-      case 5:
-        text = '50k';
-        break;
-      default:
-        return Container();
-    }
-
-    return Text(text, style: style, textAlign: TextAlign.left);
   }
 
   LineChartData mainData() {
@@ -115,14 +93,8 @@ class _PerformChartState extends State<PerformChart> {
       maxY: 6,
       lineBarsData: [
         LineChartBarData(
-          spots: const [
-            FlSpot(0, 3),
-            FlSpot(2.6, 2),
-            FlSpot(4.9, 5),
-            FlSpot(6.8, 3.1),
-            FlSpot(8, 4),
-            FlSpot(9.5, 3),
-            FlSpot(11, 4),
+          spots: [
+            for(var i = 0; i < widget.chartData.length; i++) FlSpot(i.toDouble(), widget.chartData[i].toDouble()),
           ],
           isCurved: true,
           gradient: LinearGradient(

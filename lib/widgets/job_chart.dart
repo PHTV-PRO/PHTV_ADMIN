@@ -20,7 +20,7 @@ class _JobChartState extends State<JobChart> {
   Widget build(BuildContext context) {
     return Expanded(
       child: AspectRatio(
-        aspectRatio: 1.6,
+        aspectRatio: 2.4,
         child: BarChart(mainBarData()),
       ),
     );

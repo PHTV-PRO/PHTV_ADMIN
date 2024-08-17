@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:one_context/one_context.dart';
+import 'package:phtv_admin/screens/auth/login_screen.dart';
 import 'package:phtv_admin/screens/tabs_screen.dart';
 
 
@@ -26,7 +27,7 @@ class App extends StatelessWidget {
       theme: theme,
       builder: OneContext().builder,
       navigatorKey: OneContext().key,
-      home: const TabsScreen(),
+      home: const LoginScreen(),
     );
   }
 }
