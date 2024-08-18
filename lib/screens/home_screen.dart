@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   var data = {};
   List jobChartData = [];
   List rcvCvData = [];
-  int postedJob = 0;
+  int openingJob = 0;
   List jobViewData = [];
   int noOfCV = 0;
   double overalPayment = 0;
@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
         jobChartData = data['jobs'];
         rcvCvData = data['number_of_job_applicated'];
         jobViewData = data['number_of_job_viewed'];
-        postedJob = data['jobs_has_been_created'];
+        openingJob = data['opening_jobs'];
         noOfCV = data['total_applicated_by_month'];
         overalPayment = data['overall_payment'];
         isLoading = false;
@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Row(
                     children: [
-                      homedata('Posted Job', postedJob, Colors.deepPurple),
+                      homedata('Opening Jobs', openingJob, Colors.deepPurple),
                       homedata('No. of CV', noOfCV, Colors.green)
                     ],
                   ),

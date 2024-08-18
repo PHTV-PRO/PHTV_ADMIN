@@ -62,7 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
             child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 14.0),
+                margin: const EdgeInsets.only(right: 14.0, left: 14.0, bottom: 14.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [

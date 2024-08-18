@@ -32,19 +32,24 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     Widget activePage = const HomeScreen();
+    String titlePate = 'Home';
 
     switch (_selectedIndex) {
       case 0:
         activePage = const HomeScreen();
+        titlePate = 'Home';
         break;
       case 1:
         activePage = const MyJobsScreen();
+        titlePate = 'My Jobs';
         break;
       case 2:
         activePage = const ProfileScreen();
+        titlePate = 'My CV';
         break;
       case 3:
         activePage = const ProfileScreen();
+        titlePate = 'Profile';
         break;
     }
 
@@ -111,15 +116,15 @@ class _TabsScreenState extends State<TabsScreen> {
                              },
                            ),
                            ElevatedButton(
-                             child: const Text('Signout'),
                              style: ElevatedButton.styleFrom(
-                               backgroundColor: const Color.fromARGB(255, 39, 39, 39),
-                                   foregroundColor: Colors.white
-                               ),
+                                 backgroundColor: Colors.indigo,
+                                 foregroundColor: Colors.white,
+                              ),
                              onPressed: () async {
                                await storage.deleteAll();
                                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LoginScreen(),), (route) => false);
                              },
+                             child: const Text('Signout'),
                            ),
 
                          ],
@@ -144,15 +149,21 @@ class _TabsScreenState extends State<TabsScreen> {
             appBar: AppBar(
               centerTitle: true,
               backgroundColor: bgColor,
-              actions: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    EneftyIcons.search_normal_2_outline,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(titlePate, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                ],
+              ),
+              // actions: [
+              //   IconButton(
+              //     onPressed: () {},
+              //     icon: const Icon(
+              //       EneftyIcons.search_normal_2_outline,
+              //       color: Colors.white,
+              //     ),
+              //   ),
+              // ],
             ),
             body: Center(
               child: Container(

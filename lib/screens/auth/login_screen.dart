@@ -202,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ElevatedButton(
                           onPressed: _submitLogin,
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
+                              backgroundColor: Colors.indigo,
                               foregroundColor: Colors.white,
                               fixedSize: const Size(150, 45)
                           ),

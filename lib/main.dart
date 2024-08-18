@@ -8,7 +8,7 @@ import 'package:phtv_admin/screens/tabs_screen.dart';
 final theme = ThemeData(
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
-    seedColor: Colors.red,
+    seedColor: Colors.indigoAccent,
   ),
   fontFamily: GoogleFonts.inter().fontFamily,
   textTheme: GoogleFonts.interTextTheme(),
