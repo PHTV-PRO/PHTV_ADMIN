@@ -32,3 +32,24 @@ class AdminEmployerApi extends ApiConfig {
 
   static final getJobs = AdminEmployerApi(path: '/account', method: RequestMethod.get);
 }
+
+class JobApi extends ApiConfig {
+  JobApi(
+      {super.module = 'general',
+        required super.path,
+        required super.method,
+        super.isAuth = true});
+
+  static final getJobDetail = JobApi(path: '/job', method: RequestMethod.get);
+}
+
+class EmployerJobApi extends ApiConfig {
+  EmployerJobApi(
+      {super.module = 'employer',
+        required super.path,
+        required super.method,
+        super.isAuth = false});
+
+  static final enableDisbaleJob = EmployerJobApi(path: '/job/on_or_off', method: RequestMethod.put);
+  static final getCvByJob = EmployerJobApi(path: '/application_by_job', method: RequestMethod.get);
+}

@@ -54,45 +54,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ? const Center(child: CircularProgressIndicator())
           : Container(
               margin: const EdgeInsets.symmetric(horizontal: 14.0),
-              padding: const EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: const Color.fromARGB(255, 55, 58, 64),
-              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: NetworkImage(companyLogo),
-                        backgroundColor: Colors.white,
-                        radius: 38,
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              companyName,
-                              style: const TextStyle(
-                                  color: Colors.white70,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(companyLogo),
+                    backgroundColor: Colors.white,
+                    radius: 38,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    companyName,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        color: Colors.white70,
+                        fontWeight: FontWeight.bold),
                   ),
                   Container(
                       width: double.infinity,
                       margin: const EdgeInsets.only(top: 10),
-                      padding: const EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.all(12.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Colors.black54,
+                        color: const Color.fromARGB(255, 32, 34, 37),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black12,
+                              spreadRadius: 0,
+                              blurRadius: 4,
+                            ),
+                          ]
                       ),
                       child: Column(
                         children: [
@@ -105,7 +96,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             style: const TextStyle(fontSize: 12, color: Colors.white54),
                           ),
                         ],
-                      )),
+                      ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.all(12.0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: const Color.fromARGB(255, 32, 34, 37),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black12,
+                            spreadRadius: 0,
+                            blurRadius: 4,
+                          ),
+                        ]
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          combo,
+                          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white54),
+                        ),
+                        Text(
+                          'From: ${DateFormat("dd/MM/yyyy").format(DateTime.parse(comboStart))} - To: ${DateFormat("dd/MM/yyyy").format(DateTime.parse(comboEnd))}',
+                          style: const TextStyle(fontSize: 12, color: Colors.white54),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               )),
     );

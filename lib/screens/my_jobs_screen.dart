@@ -1,12 +1,14 @@
 import 'package:enefty_icons/enefty_icons.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:phtv_admin/screens/job_detail_screen.dart';
 
 import '../apis/apis_list.dart';
 
 var storage = const FlutterSecureStorage();
 
-class MyJobsScreen extends StatefulWidget{
+class MyJobsScreen extends StatefulWidget {
   const MyJobsScreen({super.key});
 
   @override
@@ -16,6 +18,7 @@ class MyJobsScreen extends StatefulWidget{
 class _MyJobsScreenState extends State<MyJobsScreen> {
   var data = {};
   List jobData = [];
+  bool isActive = false;
   bool isLoading = true;
 
   @override
@@ -35,7 +38,12 @@ class _MyJobsScreenState extends State<MyJobsScreen> {
         isLoading = false;
       });
     }
-    print(jobData);
+  }
+
+  enableDisableJob(int id) async {
+    await EmployerJobApi.enableDisbaleJob
+        .sendRequest(urlParam: '/${id.toString()}');
+    getJobsData();
   }
 
   @override
@@ -51,75 +59,102 @@ class _MyJobsScreenState extends State<MyJobsScreen> {
                     child: isLoading
                         ? const Center(child: CircularProgressIndicator())
                         : (jobData.isEmpty
-                        ? Container(
-                        height: 110,
-                        alignment: Alignment.center,
-                        child: const Text('You still not create any Job'))
-                        : ListView.builder(
-                      physics: const ClampingScrollPhysics(),
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      itemCount: jobData.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          Container(
-                            padding: const EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.black38,
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.black12,
-                                    spreadRadius: 2,
-                                    blurRadius: 6,
-                                  ),
-                                ]
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(jobData[index]['title'] != '' ? jobData[index]['title'].toString().toUpperCase() : 'NO-NAME', style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.red
-                                      ),),
-                                      Text('Created date: ${jobData[index]['start_date'].toString().substring(0,10)}', style: const TextStyle(fontSize: 12),),
-
-                                    ],
+                            ? Container(
+                                height: 110,
+                                alignment: Alignment.center,
+                                child:
+                                    const Text('You still not create any Job'))
+                            : ListView.builder(
+                                physics: const ClampingScrollPhysics(),
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemCount: jobData.length,
+                                itemBuilder:
+                                    (BuildContext context, int index) =>
+                                        InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => JobDetailScreen(jobId: jobData[index]['id'])));
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(14),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(16),
+                                        color: const Color.fromARGB(
+                                            255, 47, 49, 54),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: Colors.black12,
+                                            spreadRadius: 0,
+                                            blurRadius: 2,
+                                          ),
+                                        ]),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          jobData[index]['title'],
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.indigoAccent),
+                                        ),
+                                        Text(
+                                          'Amount: ${jobData[index]['amount'].toString()}',
+                                          style: const TextStyle(
+                                              color: Colors.white70),
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Start date: ${jobData[index]['start_date'].toString().substring(0, 10)}',
+                                                    style: const TextStyle(
+                                                        fontSize: 12,
+                                                        color: Colors.white54),
+                                                  ),
+                                                  Text(
+                                                    'End date: ${jobData[index]['end_date'].toString().substring(0, 10)}',
+                                                    style: const TextStyle(
+                                                        fontSize: 12,
+                                                        color: Colors.white54),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            InkWell(
+                                                onTap: () async {
+                                                  enableDisableJob(
+                                                      jobData[index]['id']);
+                                                },
+                                                child: Icon(
+                                                    jobData[index]['_active']
+                                                        ? FluentIcons
+                                                            .toggle_right_24_filled
+                                                        : FluentIcons
+                                                            .toggle_left_24_regular,
+                                                    size: 40,
+                                                    color: jobData[index]
+                                                            ['_active']
+                                                        ? Colors.indigoAccent
+                                                        : const Color.fromARGB(
+                                                            255, 32, 34, 37)))
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                IconButton(onPressed: (){
-                                  showDialog(
-                                      context: context,
-                                      useRootNavigator: false,
-                                      builder: (BuildContext dialogContext) => AlertDialog(
-                                        elevation: 0,
-                                        backgroundColor: Colors.white,
-                                        title: const Text('Confirm Delete', textAlign: TextAlign.center),
-                                        content: Text('Are you sure to delete CV ${jobData[index]['title'].toString().toUpperCase()}', textAlign: TextAlign.center),
-                                        actions: [
-                                          TextButton(onPressed: (){
-                                            Navigator.of(context).pop();
-                                          }, child: const Text('Cancel')),
-                                          ElevatedButton(
-                                              onPressed: (){
-
-                                              },
-                                              style: ElevatedButton.styleFrom(backgroundColor: Colors.red, foregroundColor: Colors.white),
-                                              child: const Text('Confirm'))
-                                        ],
-                                      ));
-                                }, icon: const Icon(EneftyIcons.trash_outline, size: 18, color: Colors.red))
-                              ],
-                            ),
-                          ),
-                    ))),
+                              ))),
               ],
             ),
-          )
-    ),
+          )),
     );
   }
 }
