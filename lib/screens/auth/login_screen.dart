@@ -42,11 +42,9 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const TabsScreen(),), (route) => false);
       }else{
         await storage.deleteAll();
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LoginScreen(),), (route) => false);
       }
     }else{
       await storage.deleteAll();
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LoginScreen(),), (route) => false);
     }
   }
 

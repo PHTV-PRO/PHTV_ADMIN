@@ -29,6 +29,7 @@ class _MyJobsScreenState extends State<MyJobsScreen> {
 
   getJobsData() async {
     var token = await storage.read(key: 'token');
+    print(token);
     var rs = await AdminEmployerApi.getJobs.sendRequest(token: token);
 
     data = rs;
@@ -41,8 +42,7 @@ class _MyJobsScreenState extends State<MyJobsScreen> {
   }
 
   enableDisableJob(int id) async {
-    await EmployerJobApi.enableDisbaleJob
-        .sendRequest(urlParam: '/${id.toString()}');
+    await EmployerJobApi.enableDisbaleJob.sendRequest(urlParam: '/${id.toString()}');
     getJobsData();
   }
 

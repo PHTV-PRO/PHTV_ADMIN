@@ -1,7 +1,10 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
-
 import '../apis/apis_list.dart';
+
+var storage = const FlutterSecureStorage();
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -17,6 +20,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String combo = '';
   String comboStart = '';
   String comboEnd = '';
+  String introduction = '';
   bool isLoading = true;
 
   @override
@@ -26,7 +30,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   getProfileData() async {
-    var rs = await AdminChartApi.getProfile.sendRequest(urlParam: '/2');
+    var loggedUser = await storage.read(key: 'user');
+    int userId = jsonDecode(loggedUser!)['id'];
+    print(userId);
+    var rs = await AdminChartApi.getProfile.sendRequest(urlParam: '/${userId.toString()}');
     data = rs['companyForEmployer'];
     if (data.isNotEmpty) {
       setState(() {
@@ -35,6 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         combo = data['subcriptionPlan']['name'];
         comboStart = data['subcriptionPlan']['start_date'];
         comboEnd = data['subcriptionPlan']['end_date'];
+        introduction = data['introduction'];
         isLoading = false;
       });
     }
@@ -52,31 +60,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
       backgroundColor: const Color.fromARGB(255, 39, 41, 45),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : Container(
-              margin: const EdgeInsets.symmetric(horizontal: 14.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(companyLogo),
-                    backgroundColor: Colors.white,
-                    radius: 38,
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    companyName,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        color: Colors.white70,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Container(
+          : SingleChildScrollView(
+            child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 14.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(companyLogo),
+                      backgroundColor: Colors.white,
+                      radius: 38,
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      companyName,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          color: Colors.white70,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Container(
+                        width: double.infinity,
+                        margin: const EdgeInsets.only(top: 10),
+                        padding: const EdgeInsets.all(12.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color.fromARGB(255, 32, 34, 37),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.black12,
+                                spreadRadius: 0,
+                                blurRadius: 4,
+                              ),
+                            ]
+                        ),
+                        child: Column(
+                          children: [
+                            Text(
+                              combo,
+                              style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white54),
+                            ),
+                            Text(
+                              'From: ${DateFormat("dd/MM/yyyy").format(DateTime.parse(comboStart))} - To: ${DateFormat("dd/MM/yyyy").format(DateTime.parse(comboEnd))}',
+                              style: const TextStyle(fontSize: 12, color: Colors.white54),
+                            ),
+                          ],
+                        ),
+                    ),
+                    Container(
                       width: double.infinity,
                       margin: const EdgeInsets.only(top: 10),
                       padding: const EdgeInsets.all(12.0),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: const Color.fromARGB(255, 32, 34, 37),
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color.fromARGB(255, 32, 34, 37),
                           boxShadow: const [
                             BoxShadow(
                               color: Colors.black12,
@@ -85,49 +122,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ]
                       ),
-                      child: Column(
-                        children: [
-                          Text(
-                            combo,
-                            style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white54),
-                          ),
-                          Text(
-                            'From: ${DateFormat("dd/MM/yyyy").format(DateTime.parse(comboStart))} - To: ${DateFormat("dd/MM/yyyy").format(DateTime.parse(comboEnd))}',
-                            style: const TextStyle(fontSize: 12, color: Colors.white54),
-                          ),
-                        ],
+                      child: Text(
+                        introduction,
+                        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white54),
                       ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    margin: const EdgeInsets.only(top: 10),
-                    padding: const EdgeInsets.all(12.0),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: const Color.fromARGB(255, 32, 34, 37),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.black12,
-                            spreadRadius: 0,
-                            blurRadius: 4,
-                          ),
-                        ]
                     ),
-                    child: Column(
-                      children: [
-                        Text(
-                          combo,
-                          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white54),
-                        ),
-                        Text(
-                          'From: ${DateFormat("dd/MM/yyyy").format(DateTime.parse(comboStart))} - To: ${DateFormat("dd/MM/yyyy").format(DateTime.parse(comboEnd))}',
-                          style: const TextStyle(fontSize: 12, color: Colors.white54),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              )),
+                  ],
+                )),
+          ),
     );
   }
 }

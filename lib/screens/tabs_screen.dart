@@ -1,6 +1,7 @@
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:phtv_admin/screens/auth/login_screen.dart';
 import 'package:phtv_admin/screens/home_screen.dart';
 import 'package:phtv_admin/screens/my_jobs_screen.dart';
 import 'package:phtv_admin/screens/profile_screen.dart';
@@ -81,6 +82,61 @@ class _TabsScreenState extends State<TabsScreen> {
               label: Text('Profile', style: TextStyle(color: Colors.white)),
             ),
           ],
+         trailing: Expanded(
+           child: Column(
+             mainAxisAlignment: MainAxisAlignment.end,
+             children: [
+               IconButton(
+                 onPressed: () async{
+                   showDialog(
+                     context: context,
+                     builder: (context) {
+                       return AlertDialog(
+                         title: const Text('You are signing out?',style: TextStyle(color: Colors.white)),
+                         content: const SingleChildScrollView(
+                           child: ListBody(
+                             children: <Widget>[
+                               Text('You are about to sign out our app', style: TextStyle(color: Colors.white70),),
+                               Text('Would you please confirm?', style: TextStyle(color: Colors.white70)),
+                             ],
+                           ),
+                         ),
+                         backgroundColor: const Color.fromARGB(255, 45, 48, 54),
+                         elevation: 0,
+                         actions: <Widget>[
+                           TextButton(
+                             child: const Text('Cancel', style: TextStyle(color: Colors.white70)),
+                             onPressed: () {
+                               Navigator.of(context).pop();
+                             },
+                           ),
+                           ElevatedButton(
+                             child: const Text('Signout'),
+                             style: ElevatedButton.styleFrom(
+                               backgroundColor: const Color.fromARGB(255, 39, 39, 39),
+                                   foregroundColor: Colors.white
+                               ),
+                             onPressed: () async {
+                               await storage.deleteAll();
+                               Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LoginScreen(),), (route) => false);
+                             },
+                           ),
+
+                         ],
+                       );
+                     },
+                   );
+                 },
+                 icon: const Column(
+                   children: [
+                     Icon(EneftyIcons.logout_2_outline, color: Colors.white),
+                     Text("Signout", style: TextStyle(color: Colors.white, fontSize: 12),)
+                   ],
+                 ),
+               ),
+             ],
+           ),
+         ),
         ),
         // This is the main content.
         Expanded(

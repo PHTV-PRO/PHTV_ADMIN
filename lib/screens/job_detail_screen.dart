@@ -237,8 +237,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                                                   color: Colors.white70),
                                             ))
                                         : ListView.builder(
-                                            physics:
-                                                const ClampingScrollPhysics(),
+                                            physics: const ClampingScrollPhysics(),
                                             shrinkWrap: true,
                                             scrollDirection: Axis.vertical,
                                             itemCount: cvList.length,
@@ -248,58 +247,36 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                                               margin: const EdgeInsets.all(10),
                                               padding: const EdgeInsets.all(20),
                                               decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  color: Colors.white,
+                                                  borderRadius: BorderRadius.circular(10),
+                                                  color: const Color.fromARGB(255, 32, 34, 37),
                                                   boxShadow: [
                                                     BoxShadow(
-                                                      color: Colors.grey
-                                                          .withOpacity(0.4),
+                                                      color: Colors.grey.withOpacity(0.4),
                                                       spreadRadius: 0,
                                                       blurRadius: 6,
                                                     ),
                                                   ]),
                                               child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  const Icon(
-                                                      EneftyIcons
-                                                          .document_favorite_outline,
+                                                  const Icon(EneftyIcons.document_favorite_outline,
                                                       color: Colors.red,
                                                       size: 35),
                                                   const SizedBox(width: 20),
                                                   Expanded(
                                                     child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        Text(
-                                                          cvList[index][
-                                                                      'name'] !=
-                                                                  ''
-                                                              ? cvList[index]
-                                                                      ['name']
-                                                                  .toString()
-                                                                  .toUpperCase()
-                                                              : 'NO-NAME',
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  color: Colors
-                                                                      .red),
+                                                        Text(cvList[index]['name'].toString().toUpperCase(),
+                                                          style: const TextStyle(
+                                                                  fontWeight: FontWeight.bold,
+                                                                  color: Colors.red,),
                                                         ),
                                                         Text(
                                                           'Created date: ${cvList[index]['create_at'].toString().substring(0, 10)}',
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontSize: 12),
+                                                          style: const TextStyle(fontSize: 12,),
                                                         ),
-                                                        const SizedBox(
-                                                            height: 8),
+                                                        const SizedBox(height: 8,),
                                                         SizedBox(
                                                             height:25,
                                                             child: ElevatedButton.icon(onPressed: (){
