@@ -32,8 +32,9 @@ class _PDFViewScreenState extends State<PDFViewScreen> {
             color: Colors.white
         ),
         centerTitle: true,
-        backgroundColor: Colors.red,
+        backgroundColor: const Color.fromARGB(255, 45, 48, 54),
       ),
+      backgroundColor: const Color.fromARGB(255, 39, 41, 45),
       body: SfPdfViewer.network(
         widget.path,
         key: _pdfViewerKey,

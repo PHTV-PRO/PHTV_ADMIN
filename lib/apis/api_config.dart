@@ -73,6 +73,7 @@ class RequestHandler {
             'Content-Type': 'application/json',
             if (authorized) 'Authorization': 'Bearer $token',
           };
+      print(urlString);
       final response = await method.apiCall(Uri.parse(urlString),
           headers: headers, body: json.encode(body));
       if (response.statusCode == 200) {

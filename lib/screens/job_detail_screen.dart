@@ -47,12 +47,14 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
 
   getJobData(int id) async {
     var token = await storage.read(key: 'token');
-    var rs = await JobApi.getJobDetail
-        .sendRequest(token: token, urlParam: '/${id.toString()}');
+    var rs = await JobApi.getJobDetail.sendRequest(token: token, urlParam: '/${id.toString()}');
     jobDetail = rs;
     if (jobDetail.isNotEmpty) {
-      getAllCV(jobDetail['id'], 0, 0);
+      var data = await EmployerJobApi.getCvByJob.sendRequest(urlParam: '?job_id=${id.toString()}&size=0&page=0');
+
+      //getAllCV(jobDetail['id'], 0, 0);
       setState(() {
+        cvList = data.map((e) => e).toList();
         jobId = jobDetail['id'] ?? 0;
         jobTitle = jobDetail['title'] ?? '';
         amount = jobDetail['amount'] ?? 0;
@@ -73,14 +75,6 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
         }
         isLoading = false;
       });
-    }
-  }
-
-  getAllCV(int id, int size, int page) async {
-    var data = await EmployerJobApi.getCvByJob
-        .sendRequest(urlParam: '?job_id=$id&size=$size&page=$page');
-    if (data != null) {
-      cvList = data.map((e) => e).toList();
     }
   }
 
@@ -251,37 +245,44 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                                                   color: const Color.fromARGB(255, 32, 34, 37),
                                                   boxShadow: [
                                                     BoxShadow(
-                                                      color: Colors.grey.withOpacity(0.4),
+                                                      color: Colors.black.withOpacity(0.4),
                                                       spreadRadius: 0,
-                                                      blurRadius: 6,
+                                                      blurRadius: 2,
                                                     ),
                                                   ]),
                                               child: Row(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   const Icon(EneftyIcons.document_favorite_outline,
-                                                      color: Colors.red,
+                                                      color: Colors.white70,
                                                       size: 35),
                                                   const SizedBox(width: 20),
                                                   Expanded(
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        Text(cvList[index]['name'].toString().toUpperCase(),
+                                                        Text(cvList[index]['cv']['name'].toString().toUpperCase(),
                                                           style: const TextStyle(
                                                                   fontWeight: FontWeight.bold,
-                                                                  color: Colors.red,),
+                                                                  color: Colors.white70,),
                                                         ),
                                                         Text(
-                                                          'Created date: ${cvList[index]['create_at'].toString().substring(0, 10)}',
-                                                          style: const TextStyle(fontSize: 12,),
+                                                          'Created date: ${cvList[index]['cv']['create_at'].toString().substring(0, 10)}',
+                                                          style: const TextStyle(fontSize: 12, color: Colors.white54),
                                                         ),
                                                         const SizedBox(height: 8,),
                                                         SizedBox(
-                                                            height:25,
-                                                            child: ElevatedButton.icon(onPressed: (){
-                                                              Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => PDFViewScreen(path: cvList[index]['file_name'])));
-                                                            }, icon: const Icon(EneftyIcons.eye_outline, size: 18), label: const Text('Preview')))
+                                                          height: 35,
+                                                          child: ElevatedButton.icon(
+                                                              onPressed: (){
+                                                                Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => PDFViewScreen(path: cvList[index]['cv']['file_name'])));
+                                                              },
+                                                              style: ElevatedButton.styleFrom(
+                                                                backgroundColor: Colors.blue,
+                                                                foregroundColor: Colors.white
+                                                              ),
+                                                              icon: const Icon(EneftyIcons.eye_outline, size: 18), label: const Text('Preview')),
+                                                        )
                                                       ],
                                                     ),
                                                   ),
