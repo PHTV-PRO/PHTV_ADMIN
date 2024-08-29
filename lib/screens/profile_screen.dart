@@ -32,7 +32,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   getProfileData() async {
     var loggedUser = await storage.read(key: 'user');
     int userId = jsonDecode(loggedUser!)['id'];
-    print(userId);
     var rs = await AdminChartApi.getProfile.sendRequest(urlParam: '/${userId.toString()}');
     data = rs['companyForEmployer'];
     if (data.isNotEmpty) {

@@ -27,20 +27,16 @@ class _PDFViewScreenState extends State<PDFViewScreen> {
   void initState() {
     super.initState();
     isSave = widget.isSave;
-    print(isSave);
   }
 
 
   saveCv(int id) async {
     var token = await storage.read(key: 'token');
-    print(token);
     var rs = await AdminEmployerApi.saveCV.sendRequest(token: token, urlParam: '/${id.toString()}');
-    print(rs);
     if(rs != null){
       setState(() {
         isSave = !isSave;
       });
-      print(isSave);
     }
 
   }

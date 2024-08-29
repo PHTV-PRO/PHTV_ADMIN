@@ -73,7 +73,6 @@ class RequestHandler {
             'Content-Type': 'application/json',
             if (authorized) 'Authorization': 'Bearer $token',
           };
-      print(urlString);
       final response = await method.apiCall(Uri.parse(urlString),
           headers: headers, body: json.encode(body));
       if (response.statusCode == 200) {
@@ -103,7 +102,6 @@ class RequestHandler {
         throw Exception(response.reasonPhrase);
       }
     } catch (e) {
-      print('There is an issue with : $urlString');
       throw Exception(e.toString());
     }
   }
