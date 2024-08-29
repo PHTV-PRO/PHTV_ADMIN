@@ -31,6 +31,8 @@ class AdminEmployerApi extends ApiConfig {
         super.isAuth = true});
 
   static final getJobs = AdminEmployerApi(path: '/account', method: RequestMethod.get);
+  static final getSaveCV = AdminEmployerApi(path: '/cv_save', method: RequestMethod.get);
+  static final saveCV = AdminEmployerApi(path: '/cv_save', method: RequestMethod.post);
 }
 
 class JobApi extends ApiConfig {

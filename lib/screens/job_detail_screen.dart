@@ -1,13 +1,9 @@
 import 'package:enefty_icons/enefty_icons.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:intl/intl.dart';
 import 'package:phtv_admin/screens/pdf_view_screen.dart';
-
 import '../apis/apis_list.dart';
-import '../common_widgets/body_text.dart';
-import '../common_widgets/bullet_list.dart';
-import '../common_widgets/header_text.dart';
 
 var storage = const FlutterSecureStorage();
 
@@ -51,8 +47,6 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
     jobDetail = rs;
     if (jobDetail.isNotEmpty) {
       var data = await EmployerJobApi.getCvByJob.sendRequest(urlParam: '?job_id=${id.toString()}&size=0&page=0');
-
-      //getAllCV(jobDetail['id'], 0, 0);
       setState(() {
         cvList = data.map((e) => e).toList();
         jobId = jobDetail['id'] ?? 0;
@@ -76,6 +70,10 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
         isLoading = false;
       });
     }
+  }
+
+  onGoBack(dynamic value) {
+    getJobData(widget.jobId);
   }
 
   @override
@@ -261,10 +259,19 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                                                     child: Column(
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        Text(cvList[index]['cv']['name'].toString().toUpperCase(),
-                                                          style: const TextStyle(
-                                                                  fontWeight: FontWeight.bold,
-                                                                  color: Colors.white70,),
+                                                        Row(
+                                                          children: [
+                                                            Text(cvList[index]['cv']['name'].toString().toUpperCase(),
+                                                              style: const TextStyle(
+                                                                      fontWeight: FontWeight.bold,
+                                                                      color: Colors.white70,),
+                                                            ),
+                                                            const Spacer(),
+                                                            cvList[index]['cv_is_save'] == true
+                                                                ? const Icon(FluentIcons.bookmark_16_filled,
+                                                              color:  Colors.indigoAccent)
+                                                                : const SizedBox.shrink()
+                                                          ],
                                                         ),
                                                         Text(
                                                           'Created date: ${cvList[index]['cv']['create_at'].toString().substring(0, 10)}',
@@ -275,7 +282,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                                                           height: 35,
                                                           child: ElevatedButton.icon(
                                                               onPressed: (){
-                                                                Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => PDFViewScreen(path: cvList[index]['cv']['file_name'])));
+                                                                Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => PDFViewScreen(cvId: cvList[index]['id'], isSave: cvList[index]['cv_is_save'], path: cvList[index]['cv']['file_name']))).then(onGoBack);
                                                               },
                                                               style: ElevatedButton.styleFrom(
                                                                 backgroundColor: Colors.blue,

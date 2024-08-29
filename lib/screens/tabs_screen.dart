@@ -1,8 +1,10 @@
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:phtv_admin/main.dart';
 import 'package:phtv_admin/screens/auth/login_screen.dart';
 import 'package:phtv_admin/screens/home_screen.dart';
+import 'package:phtv_admin/screens/my_cv_screen.dart';
 import 'package:phtv_admin/screens/my_jobs_screen.dart';
 import 'package:phtv_admin/screens/profile_screen.dart';
 
@@ -44,7 +46,7 @@ class _TabsScreenState extends State<TabsScreen> {
         titlePate = 'My Jobs';
         break;
       case 2:
-        activePage = const ProfileScreen();
+        activePage = const MyCvScreen();
         titlePate = 'My CV';
         break;
       case 3:
@@ -122,7 +124,7 @@ class _TabsScreenState extends State<TabsScreen> {
                               ),
                              onPressed: () async {
                                await storage.deleteAll();
-                               Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LoginScreen(),), (route) => false);
+                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen(),));
                              },
                              child: const Text('Signout'),
                            ),
@@ -152,18 +154,9 @@ class _TabsScreenState extends State<TabsScreen> {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(titlePate, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                  Text(titlePate, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
                 ],
               ),
-              // actions: [
-              //   IconButton(
-              //     onPressed: () {},
-              //     icon: const Icon(
-              //       EneftyIcons.search_normal_2_outline,
-              //       color: Colors.white,
-              //     ),
-              //   ),
-              // ],
             ),
             body: Center(
               child: Container(

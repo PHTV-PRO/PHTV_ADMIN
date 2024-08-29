@@ -90,7 +90,7 @@ class _ReceivedCVChartState extends State<ReceivedCVChart> {
       minX: 0,
       maxX: 11,
       minY: 0,
-      maxY: 6,
+      maxY: 12,
       lineBarsData: [
         LineChartBarData(
           spots: [

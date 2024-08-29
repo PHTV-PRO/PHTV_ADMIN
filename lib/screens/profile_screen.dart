@@ -85,7 +85,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.all(12.0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: const Color.fromARGB(255, 32, 34, 37),
+                          color: Colors.indigoAccent,
                             boxShadow: const [
                               BoxShadow(
                                 color: Colors.black12,
@@ -98,11 +98,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           children: [
                             Text(
                               combo,
-                              style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white54),
+                              style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                             ),
                             Text(
                               'From: ${DateFormat("dd/MM/yyyy").format(DateTime.parse(comboStart))} - To: ${DateFormat("dd/MM/yyyy").format(DateTime.parse(comboEnd))}',
-                              style: const TextStyle(fontSize: 12, color: Colors.white54),
+                              style: const TextStyle(fontSize: 12, color: Colors.white70),
                             ),
                           ],
                         ),

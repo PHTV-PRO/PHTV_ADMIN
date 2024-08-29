@@ -25,9 +25,14 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: theme,
-      builder: OneContext().builder,
+      // builder: OneContext().builder,
       navigatorKey: OneContext().key,
       home: const LoginScreen(),
+      builder: (context, child) {
+        return OneContext().builder(
+            context,
+            child!);
+      },
     );
   }
 }
